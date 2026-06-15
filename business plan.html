@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="LoopWise adalah platform AI untuk efisiensi SDM, shift kerja, stok, waste, dan circular operations UMKM." />
+  <title>LoopWise — Smarter Crew, Less Waste, Better UMKM</title>
+  <style>
+    :root{
+      --bg:#050b0f;
+      --bg2:#071719;
+      --surface:#0b1d21;
+      --surface2:#0f292e;
+      --glass:rgba(255,255,255,.075);
+      --glass2:rgba(255,255,255,.045);
+      --line:rgba(255,255,255,.11);
+      --text:#ecfffb;
+      --muted:#9abfbb;
+      --soft:#6f9691;
+      --teal:#22e3c6;
+      --cyan:#27bfe8;
+      --lime:#c8ff67;
+      --green:#80f2a0;
+      --amber:#ffd166;
+      --red:#ff6b83;
+      --shadow:0 34px 100px rgba(0,0,0,.42);
+      --max:1180px;
+      --r-xl:34px;
+      --r-lg:24px;
+      --r-md:18px;
+      --r-sm:12px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(34,227,198,.25), transparent 33%),
+        radial-gradient(circle at 82% 10%, rgba(200,255,103,.16), transparent 31%),
+        radial-gradient(circle at 44% 92%, rgba(39,191,232,.18), transparent 32%),
+        linear-gradient(135deg, #04080c 0%, #061418 50%, #050b0f 100%);
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      pointer-events:none;
+      opacity:.24;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:64px 64px;
+      mask-image:linear-gradient(to bottom, #000, transparent 90%);
+    }
+    body:after{
+      content:"";
+      position:fixed;
+      width:560px;height:560px;
+      right:-220px;top:140px;
+      z-index:-2;
+      pointer-events:none;
+      border-radius:50%;
+      background:conic-gradient(from 180deg, transparent, rgba(34,227,198,.34), transparent, rgba(200,255,103,.20), transparent);
+      filter:blur(54px);
+      opacity:.34;
+      animation:spin 18s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes float{50%{transform:translateY(-13px)}}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    @keyframes glow{50%{box-shadow:0 0 40px rgba(34,227,198,.4)}}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .container{width:min(var(--max), calc(100% - 36px));margin-inline:auto}
+    .pill{
+      display:inline-flex;align-items:center;gap:9px;
+      border:1px solid rgba(34,227,198,.22);
+      background:rgba(34,227,198,.08);
+      color:#cafff7;
+      border-radius:999px;
+      padding:9px 13px;
+      font-weight:850;
+      font-size:.86rem;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 18px var(--lime)}
+    .btn{
+      border:0;
+      border-radius:999px;
+      padding:12px 18px;
+      display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      font-weight:900;
+      letter-spacing:-.015em;
+      white-space:nowrap;
+      transition:.24s ease;
+    }
+    .btn-primary{color:#041d1a;background:linear-gradient(135deg,var(--teal),var(--lime));box-shadow:0 18px 46px rgba(34,227,198,.25)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 22px 56px rgba(34,227,198,.34)}
+    .btn-ghost{background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.11);color:var(--text)}
+    .btn-ghost:hover{background:rgba(255,255,255,.11);transform:translateY(-2px)}
+    .btn-small{padding:9px 14px;font-size:.86rem}
+
+    .nav{
+      position:sticky;top:0;z-index:80;
+      background:rgba(5,13,16,.72);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(18px);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:15px 0;gap:18px;
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:-.04em}
+    .logo{
+      width:44px;height:44px;border-radius:16px;
+      display:grid;place-items:center;color:#06201c;
+      background:
+        radial-gradient(circle at 73% 20%, var(--lime), transparent 26%),
+        linear-gradient(135deg,var(--teal),var(--cyan));
+      box-shadow:0 14px 40px rgba(34,227,198,.23);
+    }
+    .logo svg{width:25px;height:25px}
+    .brand span:last-child{font-size:1.18rem}
+    .nav-links{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.92rem;font-weight:800}
+    .nav-links a{padding:10px 13px;border-radius:999px;transition:.2s}
+    .nav-links a:hover{background:rgba(255,255,255,.07);color:#fff}
+    .hamb{display:none}
+
+    .hero{padding:72px 0 54px}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:center}
+    h1{
+      margin:22px 0 18px;
+      font-size:clamp(3.2rem,8.2vw,6.9rem);
+      line-height:.88;
+      letter-spacing:-.088em;
+      max-width:850px;
+    }
+    .grad{
+      background:linear-gradient(135deg,#fff 0%,#c5fff4 38%,var(--lime) 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .hero p{font-size:1.08rem;line-height:1.76;color:var(--muted);max-width:650px;margin:0}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:30px 0}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:660px;margin-top:30px}
+    .mini{
+      padding:16px;border-radius:20px;background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.09);
+    }
+    .mini strong{display:block;font-size:1.38rem;letter-spacing:-.05em;color:#fff}
+    .mini span{font-size:.82rem;color:var(--soft);font-weight:800}
+
+    .hero-visual{position:relative;min-height:640px}
+    .mock-wrap{
+      position:absolute;inset:0;border-radius:44px;overflow:hidden;
+      background:
+        linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.035)),
+        radial-gradient(circle at 20% 10%,rgba(34,227,198,.26),transparent 38%),
+        radial-gradient(circle at 80% 82%,rgba(200,255,103,.18),transparent 37%);
+      border:1px solid rgba(255,255,255,.13);
+      box-shadow:var(--shadow);
+    }
+    .mock-wrap:before{
+      content:"";position:absolute;inset:-32%;
+      background:conic-gradient(from 80deg,transparent,rgba(34,227,198,.22),transparent,rgba(200,255,103,.16),transparent);
+      animation:spin 22s linear infinite;
+      opacity:.65;
+    }
+    .mock{
+      position:absolute;inset:24px;border-radius:34px;overflow:hidden;
+      background:rgba(3,12,15,.88);
+      border:1px solid rgba(255,255,255,.10);
+      display:grid;grid-template-columns:82px 1fr;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .side{background:rgba(255,255,255,.045);border-right:1px solid rgba(255,255,255,.08);padding:16px 12px;display:flex;flex-direction:column;gap:14px;align-items:center}
+    .side-i{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:rgba(255,255,255,.07);color:var(--muted)}
+    .side-i.active{background:linear-gradient(135deg,var(--teal),var(--lime));color:#06201c}
+    .mock-main{padding:22px}
+    .mock-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}
+    .mock-title strong{display:block;font-size:1.04rem}.mock-title span{display:block;color:var(--soft);font-size:.78rem;font-weight:800;margin-top:3px}
+    .live{display:inline-flex;gap:8px;align-items:center;border-radius:999px;background:rgba(128,242,160,.09);border:1px solid rgba(128,242,160,.18);color:#caffd7;padding:8px 11px;font-size:.76rem;font-weight:900}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+    .kpi{background:rgba(255,255,255,.062);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;min-height:98px}
+    .kpi .label{font-size:.75rem;color:var(--soft);font-weight:900}.kpi .num{font-size:1.55rem;font-weight:950;letter-spacing:-.05em;margin-top:8px}.kpi .trend{font-size:.73rem;color:var(--green);font-weight:850;margin-top:8px}
+    .dash-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:12px}
+    .panel{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;min-height:150px}
+    .panel h3{font-size:.9rem;margin:0 0 12px}
+    .chart{height:126px;display:flex;gap:8px;align-items:end;padding-top:10px}
+    .chart span{flex:1;border-radius:999px 999px 8px 8px;min-height:18px;background:linear-gradient(180deg,var(--teal),rgba(34,227,198,.18))}
+    .chart span:nth-child(even){background:linear-gradient(180deg,var(--lime),rgba(200,255,103,.15))}
+    .rec{display:flex;gap:11px;align-items:flex-start;border-radius:16px;background:rgba(34,227,198,.08);border:1px solid rgba(34,227,198,.14);padding:12px;margin-top:10px}
+    .badge{width:34px;height:34px;border-radius:13px;display:grid;place-items:center;background:rgba(34,227,198,.12);color:var(--teal);flex:0 0 auto}
+    .rec b{font-size:.8rem}.rec p{font-size:.74rem;line-height:1.45;margin:3px 0 0;color:var(--muted)}
+    .bar{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin:11px 0}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--teal),var(--lime))}
+    .crew{padding:10px 11px;border-radius:999px;background:rgba(34,227,198,.09);border:1px solid rgba(34,227,198,.14);font-size:.82rem;font-weight:850;color:#d2fff8;margin:8px 0}.crew.hot{background:rgba(255,209,102,.11);border-color:rgba(255,209,102,.18);color:#ffe6a7}
+    .float-card{
+      position:absolute;z-index:6;backdrop-filter:blur(16px);
+      background:rgba(8,25,29,.88);border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 22px 60px rgba(0,0,0,.34);border-radius:22px;padding:16px;
+      animation:float 5s ease-in-out infinite;
+    }
+    .fa{left:-18px;bottom:62px;width:222px}.fb{right:-24px;top:75px;width:206px;animation-delay:1.1s}.fc{right:38px;bottom:-12px;width:232px;animation-delay:2.1s}
+    .fc-title{display:flex;gap:9px;align-items:center;font-size:.84rem;font-weight:950}.float-card p{margin:9px 0 0;line-height:1.5;color:var(--muted);font-size:.78rem}
+
+    .strip{padding:20px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);overflow:hidden}
+    .strip-track{display:flex;gap:18px;white-space:nowrap;width:max-content;animation:marquee 24s linear infinite}
+    .strip-track span{font-weight:950;color:var(--muted);letter-spacing:-.02em}.strip-track b{color:var(--lime)}
+
+    .section{padding:88px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:34px}
+    .kicker{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:var(--teal);font-weight:950;margin-bottom:10px}
+    h2{font-size:clamp(2.1rem,4.8vw,4.35rem);line-height:.98;letter-spacing:-.07em;margin:0;max-width:790px}
+    .section-head p{max-width:430px;color:var(--muted);line-height:1.65;margin:0}
+    .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card,.feature,.price-card,.step,.persona,.faq{
+      position:relative;overflow:hidden;
+      background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--r-lg);
+      padding:24px;
+      box-shadow:0 12px 48px rgba(0,0,0,.20);
+    }
+    .card:before,.feature:before,.price-card:before,.persona:before,.faq:before{
+      content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 0%,rgba(34,227,198,.14),transparent 42%);pointer-events:none;
+    }
+    .no{width:48px;height:48px;border-radius:17px;background:rgba(34,227,198,.11);display:grid;place-items:center;color:var(--teal);font-weight:950;margin-bottom:34px;border:1px solid rgba(34,227,198,.18)}
+    h3{margin:0 0 10px;font-size:1.18rem;letter-spacing:-.025em}.card p,.feature p,.price-card p,.step p,.persona p,.faq p{color:var(--muted);line-height:1.65;margin:0;font-size:.95rem}
+
+    .solution-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:18px;align-items:stretch}
+    .solution-left{border-radius:var(--r-xl);padding:42px;background:linear-gradient(135deg,rgba(34,227,198,.16),rgba(200,255,103,.07));border:1px solid rgba(34,227,198,.15);position:relative;overflow:hidden;min-height:520px;display:flex;flex-direction:column;justify-content:center}
+    .solution-left:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-120px;bottom:-120px;background:radial-gradient(circle,rgba(34,227,198,.18),transparent 62%);pointer-events:none}
+    .solution-left h2{max-width:690px}
+    .solution-left p{color:var(--muted);line-height:1.75;max-width:590px;margin:22px 0 0;position:relative;z-index:1}
+    .feature-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;position:relative;z-index:1}
+    .feature-chips span{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.11);font-size:.86rem;color:#d9fff7;font-weight:800;backdrop-filter:blur(10px);transition:.22s ease}
+    .feature-chips span:hover{transform:translateY(-2px);background:rgba(34,227,198,.12);border-color:rgba(34,227,198,.25)}
+    .solution-note{margin-top:26px;padding:16px 18px;border-radius:22px;background:rgba(2,13,16,.42);border:1px solid rgba(255,255,255,.10);color:#d8fff6;font-weight:800;line-height:1.55;position:relative;z-index:1}
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .feature{min-height:250px}.icon{width:54px;height:54px;border-radius:19px;background:linear-gradient(135deg,rgba(34,227,198,.24),rgba(200,255,103,.12));display:grid;place-items:center;color:var(--lime);margin-bottom:38px;border:1px solid rgba(255,255,255,.08);font-size:1.25rem}
+
+    .demo-shell{border-radius:38px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);overflow:hidden}
+    .demo-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
+    .traffic{display:flex;gap:8px}.traffic span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.22)}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:var(--muted);border-radius:999px;padding:9px 13px;font-weight:900;font-size:.84rem}.tab.active{background:linear-gradient(135deg,var(--teal),var(--lime));color:#06211c;border-color:transparent}
+    .demo-body{padding:22px;min-height:535px;background:rgba(2,11,14,.45)}
+    .tab-panel{display:none}.tab-panel.active{display:block}
+    .tab-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:16px}
+    .input-card,.result-card{
+      background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:20px;
+    }
+    .result-card{background:linear-gradient(145deg,rgba(34,227,198,.11),rgba(255,255,255,.045));border-color:rgba(34,227,198,.17)}
+    label{display:block;margin:14px 0 8px;color:var(--muted);font-weight:850;font-size:.86rem}
+    input,select{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);color:var(--text);border-radius:15px;padding:13px 14px;outline:none}
+    input:focus,select:focus{border-color:rgba(34,227,198,.55);box-shadow:0 0 0 4px rgba(34,227,198,.12)}
+    .score-ring{width:178px;height:178px;border-radius:50%;display:grid;place-items:center;margin:12px auto 20px;background:conic-gradient(var(--teal) calc(var(--score,76)*1%),rgba(255,255,255,.09) 0);position:relative}
+    .score-ring:after{content:"";position:absolute;inset:15px;border-radius:50%;background:#071418;border:1px solid rgba(255,255,255,.08)}
+    .score-ring div{position:relative;z-index:1}.score-ring strong{font-size:2.7rem;letter-spacing:-.06em}.score-ring span{color:var(--muted);font-weight:950;font-size:.78rem}
+    .result-list{display:grid;gap:10px}.result-item{padding:13px 14px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);display:flex;align-items:center;justify-content:space-between;gap:12px}.result-item span{color:var(--muted);font-size:.86rem}.result-item b{text-align:right}
+    .shift-board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.shift-day{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:15px}
+    .waste-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.waste-list{display:grid;gap:10px}.waste-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border-radius:18px;background:rgba(255,255,255,.052);border:1px solid rgba(255,255,255,.075);padding:14px}.waste-row p{font-size:.84rem;color:var(--muted);margin:0}.waste-row strong{display:block}.waste-row b{color:var(--red)}
+    .modules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.module{border-radius:20px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);padding:16px}.module h4{margin:0 0 8px}.module p{color:var(--muted);font-size:.84rem;line-height:1.55;margin:0 0 14px}.progress{height:9px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--teal),var(--lime))}
+
+    .market{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.tag{display:inline-flex;border-radius:999px;background:rgba(34,227,198,.10);border:1px solid rgba(34,227,198,.14);color:#cffff7;padding:7px 11px;font-size:.77rem;font-weight:950;margin-bottom:30px}
+
+    .business-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.business-card{border-radius:var(--r-xl);padding:28px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.035));min-height:410px}.business-card h3{font-size:1.7rem;letter-spacing:-.04em;margin:0 0 18px}
+    .list{display:grid;gap:12px}.item{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}.item b{width:42px;height:42px;border-radius:15px;background:rgba(34,227,198,.09);display:grid;place-items:center;color:var(--teal)}.item p{margin:0;color:var(--muted);line-height:1.55}.item strong{display:block;color:#fff;margin-bottom:3px}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}.price-card.featured{border-color:rgba(34,227,198,.32);box-shadow:0 22px 70px rgba(34,227,198,.12)}.price{font-size:2.25rem;font-weight:950;letter-spacing:-.06em;margin:20px 0 4px}.price-card ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px;color:var(--muted)}.price-card li{display:flex;gap:10px;align-items:flex-start}.check{color:var(--lime);font-weight:950}
+
+    .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.step{min-height:245px}.month{color:var(--lime);font-weight:950;font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:32px}.step:after{content:"";position:absolute;right:22px;top:22px;width:16px;height:16px;border-radius:50%;background:var(--teal);box-shadow:0 0 26px var(--teal)}
+    .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.faq h3{font-size:1rem}
+
+    .cta{padding:0 0 90px}.cta-box{border-radius:38px;padding:38px;background:linear-gradient(135deg,rgba(34,227,198,.16),rgba(200,255,103,.11));border:1px solid rgba(34,227,198,.20);display:grid;grid-template-columns:.86fr 1.14fr;gap:22px;align-items:center;position:relative;overflow:hidden}.cta-box:before{content:"";position:absolute;width:410px;height:410px;border-radius:50%;right:-130px;top:-160px;background:radial-gradient(circle,rgba(200,255,103,.18),transparent 62%)}.cta-box p{font-size:1.08rem;line-height:1.75;color:#d6fff8;margin:0;position:relative}.cta-actions{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;position:relative}
+    footer{padding:46px 0 36px;border-top:1px solid rgba(255,255,255,.08);color:var(--muted)}.footer-grid{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.footer-grid b{color:#fff}
+    .reveal{opacity:0;transform:translateY(18px);transition:.7s ease}.reveal.show{opacity:1;transform:translateY(0)}
+
+
+    .problem-alert{
+      margin:0 0 18px;
+      border-radius:24px;
+      padding:20px 22px;
+      background:linear-gradient(135deg,rgba(255,209,102,.12),rgba(34,227,198,.08));
+      border:1px solid rgba(255,209,102,.22);
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:14px;
+      align-items:flex-start;
+      box-shadow:0 18px 56px rgba(0,0,0,.18);
+    }
+    .problem-alert .badge{background:rgba(255,209,102,.14);color:var(--amber)}
+    .problem-alert strong{display:block;margin-bottom:4px;color:#fff;letter-spacing:-.02em}
+    .problem-alert p{margin:0;color:var(--muted);line-height:1.6}
+    .slider-label{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin:14px 0 8px;
+    }
+    .slider-label b{
+      flex:0 0 auto;
+      border:1px solid rgba(34,227,198,.18);
+      background:rgba(34,227,198,.08);
+      color:#d8fff7;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.78rem;
+      font-weight:950;
+    }
+    input[type="range"]{accent-color:var(--teal)}
+    .tab-grid > .input-card,
+    .tab-grid > .result-card,
+    .waste-grid > .input-card,
+    .waste-grid > .result-card{
+      min-height:430px;
+    }
+    .table-responsive{
+      width:100%;
+      overflow-x:auto;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.045);
+    }
+    .shift-table{
+      width:100%;
+      min-width:760px;
+      border-collapse:collapse;
+      color:var(--text);
+    }
+    .shift-table th,
+    .shift-table td{
+      padding:15px 14px;
+      border-bottom:1px solid rgba(255,255,255,.075);
+      text-align:left;
+      vertical-align:top;
+      font-size:.9rem;
+    }
+    .shift-table th{
+      color:#dffff8;
+      background:rgba(34,227,198,.08);
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .shift-table tr:last-child td{border-bottom:0}
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:.78rem;
+      font-weight:950;
+      border:1px solid rgba(34,227,198,.14);
+      background:rgba(34,227,198,.08);
+      color:#d5fff8;
+    }
+    .status-pill.peak{border-color:rgba(255,209,102,.24);background:rgba(255,209,102,.12);color:#ffe6a7}
+    .status-pill.low{border-color:rgba(128,242,160,.18);background:rgba(128,242,160,.09);color:#caffd7}
+    .form-status{
+      min-height:22px;
+      margin:12px 0 0;
+      color:var(--green);
+      font-weight:850;
+      font-size:.86rem;
+    }
+    .form-status.error{color:var(--red)}
+    .price-actions{margin-top:22px;display:grid;gap:10px}
+    .price-actions .btn{width:100%;font-size:.86rem;padding:11px 14px}
+    .pilot-grid{display:grid;grid-template-columns:.88fr 1.12fr;gap:18px;align-items:stretch}
+    .pilot-panel{
+      border-radius:var(--r-xl);
+      padding:28px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+      box-shadow:0 18px 64px rgba(0,0,0,.22);
+    }
+    .pilot-panel p{color:var(--muted);line-height:1.7;margin:0}
+    .lead-form{display:grid;gap:12px}
+    .lead-form label{margin:0;color:#dffff8}
+    .lead-form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    @media (max-width:1060px){
+      .hero-grid,.solution-grid,.tab-grid,.business-grid,.cta-box,.pilot-grid{grid-template-columns:1fr}
+      .hero-visual{min-height:620px;max-width:680px;margin:auto;width:100%}
+      .nav-links{display:none}.hamb{display:inline-flex}
+      .cards3,.market,.pricing,.roadmap{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:760px){
+      .container{width:min(100% - 24px,var(--max))}
+      .hero{padding-top:46px}.hero-grid{gap:18px}
+      h1{font-size:clamp(3rem,18vw,5.2rem)}
+      .hero-stats,.kpi-row,.dash-grid,.features,.cards3,.market,.pricing,.roadmap,.modules,.waste-grid,.faq-grid,.lead-form .two{grid-template-columns:1fr}
+      .hero-visual{min-height:760px}.mock{grid-template-columns:1fr;inset:10px}.side{display:none}.mock-main{padding:16px}.fa{left:8px;bottom:58px}.fb{right:8px;top:auto;bottom:292px}.fc{right:8px;bottom:8px}
+      .section{padding:68px 0}.section-head{display:block}.section-head p{margin-top:16px}.demo-body{padding:12px}.cta-box{padding:24px;border-radius:28px}.solution-left{padding:28px;min-height:auto}.feature-chips span{font-size:.8rem}.nav .btn-primary{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="LoopWise home">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 7.7A6.8 6.8 0 0 1 18.6 5l.2 3.1M17 16.3A6.8 6.8 0 0 1 5.4 19l-.2-3.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M19 3v5h-5M5 21v-5h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>LoopWise</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solusi</a>
+        <a href="#platform">Platform</a>
+        <a href="#market">Market</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#pilot">Pilot</a>
+      </nav>
+      <div>
+        <a class="btn btn-ghost btn-small hamb" href="#platform">Demo</a>
+        <a class="btn btn-primary btn-small" href="#platform">Try LoopWise</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="pill"><span class="dot"></span> AI workforce & circular operations platform</div>
+          <h1><span class="grad">Smarter Crew.</span><br>Less Waste.<br>Better UMKM.</h1>
+          <p>
+            LoopWise membantu pemilik UMKM mengelola karyawan, menyusun shift kerja, memantau stok dan waste, serta melihat performa operasional dalam satu dashboard yang sederhana, visual, dan berbasis data.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#platform">Lihat Platform
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#solution">Pelajari Solusi</a>
+          </div>
+          <div class="hero-stats" aria-label="LoopWise highlights">
+            <div class="mini"><strong>82%</strong><span>target efficiency score</span></div>
+            <div class="mini"><strong>31kg</strong><span>waste reduced simulation</span></div>
+            <div class="mini"><strong>4-in-1</strong><span>crew, shift, stock, impact</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" aria-label="LoopWise dashboard preview">
+          <div class="mock-wrap"></div>
+          <div class="mock">
+            <aside class="side">
+              <div class="side-i active">⌁</div>
+              <div class="side-i">📊</div>
+              <div class="side-i">👥</div>
+              <div class="side-i">♻</div>
+              <div class="side-i">⚙</div>
+            </aside>
+            <section class="mock-main">
+              <div class="mock-top">
+                <div class="mock-title">
+                  <strong>UMKM Operations Dashboard</strong>
+                  <span>Outlet: Kopi Sore • Last updated 08:45</span>
+                </div>
+                <div class="live"><span class="dot"></span> Live Insight</div>
+              </div>
+
+              <div class="kpi-row">
+                <div class="kpi"><div class="label">Efficiency Score</div><div class="num">82%</div><div class="trend">+14% this month</div></div>
+                <div class="kpi"><div class="label">Waste Reduced</div><div class="num">31kg</div><div class="trend">saved Rp860k</div></div>
+                <div class="kpi"><div class="label">Crew Readiness</div><div class="num">76%</div><div class="trend">4 training done</div></div>
+              </div>
+
+              <div class="dash-grid">
+                <div class="panel">
+                  <h3>Waste forecast by item</h3>
+                  <div class="chart" aria-hidden="true">
+                    <span style="height:52%"></span><span style="height:78%"></span><span style="height:38%"></span><span style="height:66%"></span><span style="height:47%"></span><span style="height:86%"></span><span style="height:58%"></span>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>AI recommendations</h3>
+                  <div class="rec"><span class="badge">♻</span><div><b>Reduce 18% stock for Choco Latte.</b><p>Varian ini sering slow-moving pada hari kerja. Alihkan promo ke jam 14.00–17.00.</p></div></div>
+                  <div class="rec"><span class="badge">👥</span><div><b>Add 1 crew on Saturday night.</b><p>Transaksi naik pada weekend, shift perlu disesuaikan.</p></div></div>
+                </div>
+                <div class="panel">
+                  <h3>Training progress</h3>
+                  <div class="bar"><i style="width:76%"></i></div>
+                  <div class="bar"><i style="width:62%"></i></div>
+                  <div class="bar"><i style="width:88%"></i></div>
+                </div>
+                <div class="panel">
+                  <h3>Today shift</h3>
+                  <div class="crew">Pagi — 2 Crew</div>
+                  <div class="crew hot">Sore — Need 1 Extra</div>
+                  <div class="crew">Closing — 2 Crew</div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="float-card fa"><div class="fc-title"><span class="badge">💡</span>Smart SOP Training</div><p>Modul pelatihan singkat untuk pelayanan, stok, kasir, dan efisiensi kerja.</p></div>
+          <div class="float-card fb"><div class="fc-title"><span class="badge">♻</span>Circular Impact</div><p>Laporan waste reduced, biaya hemat, dan dampak operasional berkelanjutan.</p></div>
+          <div class="float-card fc"><div class="fc-title"><span class="badge">⚡</span>AI Operations Insight</div><p>Rekomendasi shift, stok, dan training berdasarkan pola kerja UMKM.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip" aria-label="LoopWise keywords">
+      <div class="strip-track">
+        <span>AI Workforce • <b>Circular Operations</b> • UMKM Efficiency • Smart Shift • Waste Tracker • Green Skill Training • Impact Dashboard •</span>
+        <span>AI Workforce • <b>Circular Operations</b> • UMKM Efficiency • Smart Shift • Waste Tracker • Green Skill Training • Impact Dashboard •</span>
+      </div>
+    </div>
+
+    <section class="section" id="problem">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Problem</div>
+            <h2>Kerugian UMKM sering dimulai dari kebocoran kecil yang tidak terlihat.</h2>
+          </div>
+          <p>Salah jadwal crew, stok slow-moving, bahan sisa, dan SOP yang tidak konsisten terlihat kecil per hari, tetapi jika dibiarkan bisa menjadi biaya besar dalam setahun.</p>
+        </div>
+        <div class="problem-alert reveal"><span class="badge">!</span><div><strong>Kebocoran Rp50.000 per hari bisa menjadi lebih dari Rp18 juta per tahun.</strong><p>Angka itu bisa setara biaya sewa tempat, tambahan modal stok, atau biaya promosi yang hilang hanya karena operasional tidak tercatat dan tidak dikendalikan.</p></div></div>
+        <div class="cards3">
+          <article class="card reveal"><div class="no">01</div><h3>SDM belum terstandar</h3><p>Karyawan belajar dari instruksi lisan, sehingga pelayanan, SOP kerja, penggunaan alat, dan pengelolaan stok sering berbeda antar-shift.</p></article>
+          <article class="card reveal"><div class="no">02</div><h3>Shift tidak berbasis data</h3><p>Owner menentukan jadwal kerja berdasarkan feeling. Akibatnya, jam sepi bisa kelebihan crew, sedangkan jam ramai justru kekurangan tenaga.</p></article>
+          <article class="card reveal"><div class="no">03</div><h3>Waste tidak terlihat</h3><p>Produk tidak terjual, bahan sisa, dan stok berlebih sering tidak dicatat sebagai kerugian, padahal menggerus margin sedikit demi sedikit.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="solution">
+      <div class="container solution-grid">
+        <div class="solution-left reveal">
+          <div class="kicker">Solution</div>
+          <h2>One system for crew, operations, waste & impact.</h2>
+          <p>
+            LoopWise connects daily operational data into simple, actionable insights for small business owners — helping decisions become faster, clearer, and more profitable.
+          </p>
+          <div class="feature-chips" aria-label="LoopWise core features">
+            <span>👥 Crew Management</span>
+            <span>🗓 Shift Planning</span>
+            <span>♻ Waste Tracking</span>
+            <span>📊 Impact Dashboard</span>
+          </div>
+          <div class="solution-note">
+            Built to make daily UMKM operations easier: organize the team, reduce waste, and understand business impact from one clean dashboard.
+          </div>
+        </div>
+        <div class="features">
+          <article class="feature reveal"><div class="icon">👥</div><h3>Smart Crew Management</h3><p>Kelola data karyawan, role, kesiapan skill, dan rekomendasi pelatihan sesuai kebutuhan usaha.</p></article>
+          <article class="feature reveal"><div class="icon">🗓</div><h3>AI Shift Planner</h3><p>Susun shift kerja berdasarkan jam ramai, kapasitas pelayanan, dan pola transaksi outlet.</p></article>
+          <article class="feature reveal"><div class="icon">♻</div><h3>Waste & Stock Tracker</h3><p>Catat produk tidak terjual, stok berlebih, dan bahan terbuang, lalu dapatkan insight pengurangan waste.</p></article>
+          <article class="feature reveal"><div class="icon">📈</div><h3>Impact Dashboard</h3><p>Lihat efisiensi biaya, training progress, productivity score, dan kontribusi operasional berkelanjutan.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="platform">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Product Demo</div>
+            <h2>Simulasi produk yang menunjukkan cara LoopWise bekerja.</h2>
+          </div>
+          <p>Geser nilai, hitung waste, dan generate jadwal untuk melihat insight yang bisa dipakai pemilik UMKM secara cepat.</p>
+        </div>
+
+        <div class="demo-shell reveal">
+          <div class="demo-top">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="tabs" role="tablist">
+              <button class="tab active" data-tab="assessment">Skill Assessment</button>
+              <button class="tab" data-tab="shift">Shift Planner</button>
+              <button class="tab" data-tab="waste">Waste Tracker</button>
+              <button class="tab" data-tab="training">Training Center</button>
+            </div>
+          </div>
+
+          <div class="demo-body">
+            <section class="tab-panel active" id="assessment">
+              <div class="tab-grid">
+                <div class="input-card">
+                  <h3>Crew Readiness Assessment</h3>
+                  <label class="slider-label" for="serviceScore"><span>Customer Service Score</span><b><span id="serviceVal">78</span>/100</b></label>
+                  <input id="serviceScore" type="range" min="40" max="100" value="78">
+                  <label class="slider-label" for="cashierScore"><span>Technical Skill Score</span><b><span id="cashierVal">84</span>/100</b></label>
+                  <input id="cashierScore" type="range" min="40" max="100" value="84">
+                  <label class="slider-label" for="stockScore"><span>Stock Handling Score</span><b><span id="stockVal">67</span>/100</b></label>
+                  <input id="stockScore" type="range" min="40" max="100" value="67">
+                  <label class="slider-label" for="disciplineScore"><span>Operational Score</span><b><span id="disciplineVal">75</span>/100</b></label>
+                  <input id="disciplineScore" type="range" min="40" max="100" value="75">
+                  <button class="btn btn-primary" id="calcScore" style="width:100%;margin-top:18px">Generate Recommendation</button>
+                  <p class="form-status" id="assessmentStatus">Live score aktif — hasil berubah saat slider digeser.</p>
+                </div>
+                <div class="result-card">
+                  <h3>AI Result</h3>
+                  <div class="score-ring" id="scoreRing" style="--score:76"><div><strong id="readinessScore">76</strong><span>/100</span></div></div>
+                  <div class="result-list">
+                    <div class="result-item"><span>Recommended Training</span><b id="trainingRec">Stock Handling Basics</b></div>
+                    <div class="result-item"><span>Best Role</span><b id="roleRec">Frontline Crew</b></div>
+                    <div class="result-item"><span>Risk Alert</span><b id="riskRec">Medium stock waste risk</b></div>
+                    <div class="result-item"><span>Next Action</span><b id="actionRec">Assign 2 micro-lessons</b></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="shift">
+              <div class="input-card" style="margin-bottom:16px">
+                <h3>AI Shift Planner</h3>
+                <div class="tab-grid">
+                  <div>
+                    <label>Estimated weekend transactions</label>
+                    <input id="trxInput" type="number" value="180" min="20" max="900">
+                  </div>
+                  <div>
+                    <label>Average service time per order</label>
+                    <select id="serviceTime">
+                      <option value="3">3 minutes</option>
+                      <option value="4" selected>4 minutes</option>
+                      <option value="5">5 minutes</option>
+                      <option value="6">6 minutes</option>
+                    </select>
+                  </div>
+                </div>
+                <button class="btn btn-primary" id="planShift" style="margin-top:16px">Generate Shift Plan</button>
+              </div>
+              <div class="table-responsive" aria-label="Generated weekly shift plan">
+                <table class="shift-table">
+                  <thead>
+                    <tr>
+                      <th>Day</th>
+                      <th>Forecast Transactions</th>
+                      <th>Morning Crew</th>
+                      <th>Evening Crew</th>
+                      <th>Operational Note</th>
+                    </tr>
+                  </thead>
+                  <tbody id="shiftTableBody"></tbody>
+                </table>
+              </div>
+              <p class="form-status" id="shiftInsight"></p>
+            </section>
+
+            <section class="tab-panel" id="waste">
+              <div class="waste-grid">
+                <div class="input-card">
+                  <h3>Waste & Stock Calculator</h3>
+                  <label>Unsold product per week</label>
+                  <input id="unsoldQty" type="number" value="24" min="0">
+                  <label>Cost per product</label>
+                  <input id="costItem" type="number" value="12000" min="0">
+                  <label>Potential reduction with LoopWise</label>
+                  <select id="reduceRate">
+                    <option value="0.15">15%</option>
+                    <option value="0.25" selected>25%</option>
+                    <option value="0.35">35%</option>
+                    <option value="0.45">45%</option>
+                  </select>
+                  <button class="btn btn-primary" id="calcWaste" style="width:100%;margin-top:18px">Calculate Saving</button>
+                  <p class="form-status" id="wasteStatus"></p>
+                </div>
+                <div class="result-card">
+                  <h3>Impact Simulation</h3>
+                  <div class="waste-list">
+                    <div class="waste-row"><div><strong>Monthly waste cost</strong><p>Estimated current loss</p></div><b id="lossNow">Rp 1.152.000</b></div>
+                    <div class="waste-row"><div><strong>Potential saving</strong><p>After LoopWise recommendation</p></div><b id="savingNow" style="color:var(--green)">Rp 288.000</b></div>
+                    <div class="waste-row"><div><strong>Waste reduced</strong><p>Product equivalent per month</p></div><b id="reducedNow" style="color:var(--lime)">24 items</b></div>
+                    <div class="rec"><span class="badge">💡</span><div><b id="wasteAdvice">Bundle slow-moving products before closing hours.</b><p>Gunakan promo jam tertentu untuk mengurangi produk tidak terjual.</p></div></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="training">
+              <div class="modules">
+                <article class="module"><h4>SOP Pelayanan</h4><p>Micro-learning untuk greeting, order handling, dan complaint response.</p><div class="progress"><i style="width:82%"></i></div></article>
+                <article class="module"><h4>Waste Reduction</h4><p>Pelatihan stok, produk slow-moving, pencatatan sisa, dan closing stock.</p><div class="progress"><i style="width:64%"></i></div></article>
+                <article class="module"><h4>Kasir & Transaksi</h4><p>Dasar akurasi transaksi, rekonsiliasi sederhana, dan closing shift.</p><div class="progress"><i style="width:74%"></i></div></article>
+                <article class="module"><h4>Upselling Etis</h4><p>Teknik rekomendasi produk tanpa memaksa pelanggan.</p><div class="progress"><i style="width:56%"></i></div></article>
+                <article class="module"><h4>Energy Efficiency</h4><p>Kebiasaan kerja hemat energi untuk operasional harian UMKM.</p><div class="progress"><i style="width:49%"></i></div></article>
+                <article class="module"><h4>Leadership Crew</h4><p>Pelatihan PIC shift untuk mengatur tim kecil secara efektif.</p><div class="progress"><i style="width:68%"></i></div></article>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="market">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Target Users</div>
+            <h2>Dibangun untuk UMKM yang butuh sistem sederhana, bukan software rumit.</h2>
+          </div>
+          <p>LoopWise cocok untuk usaha dengan tim kecil yang mulai berkembang dan butuh standar kerja yang lebih rapi.</p>
+        </div>
+        <div class="market">
+          <article class="persona reveal"><span class="tag">FnB UMKM</span><h3>Kafe, cloud kitchen, bakery</h3><p>Membutuhkan shift planner, pelatihan pelayanan, dan pengurangan produk tidak terjual.</p></article>
+          <article class="persona reveal"><span class="tag">Retail</span><h3>Toko fashion, aksesoris, beauty</h3><p>Membutuhkan training sales crew, stok slow-moving, dan performa layanan pelanggan.</p></article>
+          <article class="persona reveal"><span class="tag">Creative Business</span><h3>Brand lokal & studio kreatif</h3><p>Membutuhkan SOP operasional, jadwal tim, dan laporan impact untuk branding berkelanjutan.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Business Model</div>
+            <h2>Model bisnis ringan, scalable, dan mudah diadopsi UMKM.</h2>
+          </div>
+          <p>LoopWise menggunakan model freemium agar UMKM bisa mencoba fitur dasar sebelum berlangganan fitur analitik dan rekomendasi lanjutan.</p>
+        </div>
+        <div class="business-grid">
+          <div class="business-card reveal">
+            <h3>How LoopWise Creates Value</h3>
+            <div class="list">
+              <div class="item"><b>1</b><p><strong>For Owners</strong>Keputusan shift, stok, dan training menjadi lebih terukur.</p></div>
+              <div class="item"><b>2</b><p><strong>For Crew</strong>Karyawan mendapat pelatihan singkat yang relevan dengan pekerjaan harian.</p></div>
+              <div class="item"><b>3</b><p><strong>For Operations</strong>Waste dan stok berlebih lebih mudah dilacak sebelum menjadi kerugian besar.</p></div>
+              <div class="item"><b>4</b><p><strong>For Sustainability</strong>UMKM dapat melihat dampak efisiensi melalui laporan yang mudah dipahami.</p></div>
+            </div>
+          </div>
+          <div class="business-card reveal">
+            <h3>Revenue Streams</h3>
+            <div class="list">
+              <div class="item"><b>F</b><p><strong>Freemium Access</strong>Fitur dasar untuk mengakuisisi pengguna awal.</p></div>
+              <div class="item"><b>S</b><p><strong>Subscription</strong>Paket bulanan untuk dashboard, AI recommendation, dan laporan lengkap.</p></div>
+              <div class="item"><b>T</b><p><strong>Training Premium</strong>Modul pelatihan khusus untuk pelayanan, stok, leadership, dan operasional.</p></div>
+              <div class="item"><b>P</b><p><strong>Partnership Package</strong>Paket komunitas, inkubator, multi-outlet, atau lembaga pendamping UMKM.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing">
+          <article class="price-card reveal"><h3>Starter</h3><p>Untuk UMKM kecil yang baru mulai merapikan operasional.</p><div class="price">Free</div><p>Basic crew & training tracker</p><ul><li><span class="check">✓</span>Up to 5 crew</li><li><span class="check">✓</span>Basic training modules</li><li><span class="check">✓</span>Manual waste input</li></ul><div class="price-actions"><a class="btn btn-ghost" href="#pilot">Start Free Access</a></div></article>
+          <article class="price-card featured reveal"><h3>Growth</h3><p>Untuk UMKM berkembang yang butuh insight dan laporan.</p><div class="price">Rp49k</div><p>per month per outlet</p><ul><li><span class="check">✓</span>AI recommendations</li><li><span class="check">✓</span>Shift planner</li><li><span class="check">✓</span>Impact dashboard</li><li><span class="check">✓</span>Up to 20 crew</li></ul><div class="price-actions"><a class="btn btn-primary" href="#pilot">Join Pilot Testing (Free 1 Month)</a></div></article>
+          <article class="price-card reveal"><h3>Partner</h3><p>Untuk komunitas, inkubator, atau multi-outlet UMKM.</p><div class="price">Custom</div><p>implementation package</p><ul><li><span class="check">✓</span>Multi-outlet dashboard</li><li><span class="check">✓</span>Custom training</li><li><span class="check">✓</span>Partner report</li></ul><div class="price-actions"><a class="btn btn-ghost" href="#pilot">Request Partnership</a></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Implementation</div>
+            <h2>Roadmap eksekusi dibuat sederhana dan realistis.</h2>
+          </div>
+          <p>Dari validasi masalah sampai pilot UMKM, LoopWise dikembangkan bertahap agar produk tetap sesuai kebutuhan pengguna.</p>
+        </div>
+        <div class="roadmap">
+          <article class="step reveal"><div class="month">Month 1</div><h3>Market Validation</h3><p>Interview pemilik UMKM dan karyawan operasional untuk validasi pain point.</p></article>
+          <article class="step reveal"><div class="month">Month 2</div><h3>MVP Website</h3><p>Membangun dashboard, skill assessment, shift planner, dan waste calculator.</p></article>
+          <article class="step reveal"><div class="month">Month 3</div><h3>Pilot Testing</h3><p>Uji coba pada beberapa UMKM FnB atau retail untuk mengukur efisiensi dan feedback penggunaan.</p></article>
+          <article class="step reveal"><div class="month">Month 4</div><h3>Product Growth</h3><p>Menambah rekomendasi AI, laporan impact, training premium, dan partnership channel.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">FAQ</div>
+            <h2>Pertanyaan yang sering muncul.</h2>
+          </div>
+          <p>Jawaban singkat untuk menjelaskan posisi LoopWise kepada calon pengguna atau partner.</p>
+        </div>
+        <div class="faq-grid">
+          <article class="faq reveal"><h3>Apakah LoopWise aplikasi kasir?</h3><p>Bukan. LoopWise adalah platform operasional pendamping yang fokus pada SDM, shift kerja, training, stok, waste, dan laporan dampak.</p></article>
+          <article class="faq reveal"><h3>Siapa pengguna utamanya?</h3><p>Pemilik UMKM yang memiliki karyawan operasional, terutama FnB, retail, dan bisnis kreatif yang membutuhkan sistem kerja lebih rapi.</p></article>
+          <article class="faq reveal"><h3>Apa manfaat paling cepat terasa?</h3><p>Owner bisa melihat jadwal, kesiapan karyawan, potensi waste, dan rekomendasi training tanpa harus membuat sistem manual dari nol.</p></article>
+          <article class="faq reveal"><h3>Apa sustainability-nya?</h3><p>LoopWise membantu mengurangi pemborosan stok, meningkatkan efisiensi tenaga kerja, dan membuat laporan dampak operasional yang lebih terukur.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta-box reveal">
+        <div>
+          <div class="kicker">Start Smarter</div>
+          <h2>Make every shift, stock, and crew decision wiser.</h2>
+        </div>
+        <div>
+          <p>LoopWise membantu UMKM menjalankan operasional yang lebih efisien, terstruktur, dan berkelanjutan. Mulai dari tim kecil, keputusan harian, hingga laporan dampak yang bisa dipahami pemilik usaha.</p>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="#pilot">Join Pilot Testing</a>
+            <a class="btn btn-ghost" href="#pricing">See Pricing</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+    <section class="section" id="pilot">
+      <div class="container pilot-grid">
+        <div class="pilot-panel reveal">
+          <div class="kicker">Pilot Access</div>
+          <h2>Daftarkan UMKM untuk early access LoopWise.</h2>
+          <p>Form ini dibuat untuk market validation. Calon pengguna bisa meninggalkan kontak, kategori usaha, dan jumlah crew agar tim LoopWise dapat memetakan kebutuhan operasional awal.</p>
+        </div>
+        <div class="pilot-panel reveal">
+          <form class="lead-form" id="pilotForm">
+            <div class="two">
+              <div>
+                <label for="ownerName">Nama Owner</label>
+                <input id="ownerName" type="text" placeholder="Contoh: Raka" required>
+              </div>
+              <div>
+                <label for="businessName">Nama Usaha</label>
+                <input id="businessName" type="text" placeholder="Contoh: Kopi Sore" required>
+              </div>
+            </div>
+            <div class="two">
+              <div>
+                <label for="businessType">Kategori Usaha</label>
+                <select id="businessType" required>
+                  <option value="">Pilih kategori</option>
+                  <option>FnB</option>
+                  <option>Retail</option>
+                  <option>Creative Business</option>
+                  <option>Lainnya</option>
+                </select>
+              </div>
+              <div>
+                <label for="crewTotal">Jumlah Crew</label>
+                <input id="crewTotal" type="number" min="1" placeholder="Contoh: 8" required>
+              </div>
+            </div>
+            <label for="whatsapp">Nomor WhatsApp</label>
+            <input id="whatsapp" type="tel" placeholder="Contoh: 08xxxxxxxxxx" required>
+            <button class="btn btn-primary" type="submit">Submit Pilot Interest</button>
+            <p class="form-status" id="pilotStatus"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 7.7A6.8 6.8 0 0 1 18.6 5l.2 3.1M17 16.3A6.8 6.8 0 0 1 5.4 19l-.2-3.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M19 3v5h-5M5 21v-5h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>LoopWise</span>
+      </div>
+      <p><b>LoopWise</b> — AI Workforce & Circular Operations Platform for UMKM.</p>
+    </div>
+  </footer>
+
+  <script>
+    const rupiah = n => 'Rp' + Number(n || 0).toLocaleString('id-ID', { maximumFractionDigits:0 });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('show'); });
+    }, { threshold:.13 });
+    reveals.forEach(el => io.observe(el));
+
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    function updateSliderIndicators(){
+      const ids = ['serviceScore','cashierScore','stockScore','disciplineScore'];
+      const vals = ['serviceVal','cashierVal','stockVal','disciplineVal'];
+      ids.forEach((id, index) => {
+        const input = document.getElementById(id);
+        const output = document.getElementById(vals[index]);
+        if(input && output) output.textContent = input.value;
+      });
+    }
+
+    function calculateReadiness(){
+      updateSliderIndicators();
+      const service = +document.getElementById('serviceScore').value;
+      const cashier = +document.getElementById('cashierScore').value;
+      const stock = +document.getElementById('stockScore').value;
+      const discipline = +document.getElementById('disciplineScore').value;
+      const score = Math.round((service * .28) + (cashier * .24) + (stock * .28) + (discipline * .20));
+      document.getElementById('readinessScore').textContent = score;
+      document.getElementById('scoreRing').style.setProperty('--score', score);
+      let lowest = Math.min(service, cashier, stock, discipline);
+      let training = 'Customer Handling';
+      if(lowest === stock) training = 'Stock Handling Basics';
+      if(lowest === cashier) training = 'Technical Skill Refresh';
+      if(lowest === discipline) training = 'Operational Discipline';
+      if(lowest === service) training = 'Customer Service SOP';
+      document.getElementById('trainingRec').textContent = training;
+      document.getElementById('roleRec').textContent = score >= 84 ? 'PIC Shift Candidate' : score >= 72 ? 'Frontline Crew' : 'Trainee Crew';
+      document.getElementById('riskRec').textContent = stock < 70 ? 'Medium stock waste risk' : 'Low operational risk';
+      document.getElementById('actionRec').textContent = lowest < 70 ? 'Assign 3 micro-lessons' : 'Assign 1 refresh lesson';
+      document.getElementById('assessmentStatus').textContent = `Live score aktif — readiness saat ini ${score}/100.`;
+    }
+    ['serviceScore','cashierScore','stockScore','disciplineScore'].forEach(id => document.getElementById(id).addEventListener('input', calculateReadiness));
+    document.getElementById('calcScore').addEventListener('click', calculateReadiness);
+    updateSliderIndicators();
+    calculateReadiness();
+
+    function planShift(){
+      const trxValue = document.getElementById('trxInput').value.trim();
+      const trx = Number(trxValue);
+      const minutes = Number(document.getElementById('serviceTime').value);
+      const board = document.getElementById('shiftTableBody');
+      const insight = document.getElementById('shiftInsight');
+      if(!Number.isFinite(trx) || trx <= 0 || !Number.isFinite(minutes) || minutes <= 0){
+        insight.textContent = 'Mohon masukkan estimasi transaksi dan waktu pelayanan yang valid.';
+        insight.classList.add('error');
+        board.innerHTML = '';
+        return;
+      }
+      insight.classList.remove('error');
+      const days = [
+        { day:'Mon', factor:.62, note:'Normal demand', status:'low' },
+        { day:'Tue', factor:.66, note:'Normal demand', status:'low' },
+        { day:'Wed', factor:.72, note:'Restock & training window', status:'low' },
+        { day:'Thu', factor:.78, note:'Prepare weekend stock', status:'' },
+        { day:'Fri', factor:.92, note:'Pre-peak demand', status:'' },
+        { day:'Sat', factor:1.00, note:'Peak hour alert', status:'peak' },
+        { day:'Sun', factor:.88, note:'Family / leisure traffic', status:'peak' }
+      ];
+      board.innerHTML = days.map(({day, factor, note, status}) => {
+        const forecast = Math.max(10, Math.round(trx * factor));
+        const workload = forecast * minutes;
+        const eveningCrew = Math.max(1, Math.ceil(workload / 240));
+        const morningCrew = Math.max(1, Math.ceil(eveningCrew * .65));
+        const statusText = status === 'peak' ? 'High Demand' : status === 'low' ? 'Stable' : 'Moderate';
+        return `
+          <tr>
+            <td><strong>${day}</strong></td>
+            <td>${forecast.toLocaleString('id-ID')} orders</td>
+            <td>${morningCrew} crew</td>
+            <td>${eveningCrew} crew</td>
+            <td><span class="status-pill ${status}">${statusText}</span><br><span style="color:var(--muted);font-size:.82rem">${note}</span></td>
+          </tr>
+        `;
+      }).join('');
+      const satCrew = Math.max(1, Math.ceil((trx * minutes) / 240));
+      insight.textContent = `Rekomendasi: siapkan minimal ${satCrew} crew pada shift tersibuk dan jadwalkan training pada hari demand stabil.`;
+    }
+    document.getElementById('planShift').addEventListener('click', planShift);
+    ['trxInput','serviceTime'].forEach(id => document.getElementById(id).addEventListener('input', planShift));
+    planShift();
+
+    function calcWaste(){
+      const qtyRaw = document.getElementById('unsoldQty').value.trim();
+      const costRaw = document.getElementById('costItem').value.trim();
+      const qty = Number(qtyRaw);
+      const cost = Number(costRaw);
+      const rate = Number(document.getElementById('reduceRate').value);
+      const status = document.getElementById('wasteStatus');
+      if(qtyRaw === '' || costRaw === '' || !Number.isFinite(qty) || !Number.isFinite(cost) || qty < 0 || cost <= 0){
+        status.textContent = 'Mohon masukkan jumlah produk dan biaya yang valid.';
+        status.classList.add('error');
+        return;
+      }
+      status.classList.remove('error');
+      const loss = qty * cost * 4;
+      const saving = loss * rate;
+      const reduced = Math.round(qty * 4 * rate);
+      document.getElementById('lossNow').textContent = rupiah(loss);
+      document.getElementById('savingNow').textContent = rupiah(saving);
+      document.getElementById('reducedNow').textContent = reduced.toLocaleString('id-ID') + ' items';
+      document.getElementById('wasteAdvice').textContent = rate >= .35 ? 'Create pre-order and daily stock limit.' : 'Bundle slow-moving products before closing hours.';
+      status.textContent = `Estimasi hemat ${rupiah(saving)} per bulan jika pola waste turun ${Math.round(rate * 100)}%.`;
+    }
+    ['unsoldQty','costItem','reduceRate'].forEach(id => document.getElementById(id).addEventListener('input', calcWaste));
+    document.getElementById('calcWaste').addEventListener('click', calcWaste);
+    calcWaste();
+
+    const pilotForm = document.getElementById('pilotForm');
+    if(pilotForm){
+      pilotForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const owner = document.getElementById('ownerName').value.trim();
+        const business = document.getElementById('businessName').value.trim();
+        const type = document.getElementById('businessType').value;
+        const crew = Number(document.getElementById('crewTotal').value);
+        const wa = document.getElementById('whatsapp').value.trim();
+        const status = document.getElementById('pilotStatus');
+        if(!owner || !business || !type || !wa || !Number.isFinite(crew) || crew <= 0){
+          status.textContent = 'Mohon lengkapi data pilot dengan benar.';
+          status.classList.add('error');
+          return;
+        }
+        status.classList.remove('error');
+        status.textContent = `Terima kasih, ${owner}. Data ${business} sudah masuk simulasi pilot LoopWise.`;
+        pilotForm.reset();
+      });
+    }
+  </script>
+</body>
+</html>
